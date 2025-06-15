@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sponso - Advertisers</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#4169E1", secondary: "#6C87E8" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+          font-family: 'Inter', sans-serif;
+          background-color: #f9fafb;
+      }
+      .sidebar-link.active {
+          background-color: rgba(65, 105, 225, 0.1);
+          color: #4169E1;
+          font-weight: 500;
+      }
+      .sidebar-link:hover:not(.active) {
+          background-color: rgba(65, 105, 225, 0.05);
+      }
+      .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: 6px;
+      }
+      .status-active { background-color: #10b981; }
+      .status-pending { background-color: #f59e0b; }
+      .status-inactive { background-color: #ef4444; }
+
+      input[type="checkbox"] {
+          appearance: none;
+          width: 18px;
+          height: 18px;
+          border: 2px solid #d1d5db;
+          border-radius: 4px;
+          position: relative;
+          cursor: pointer;
+      }
+
+      input[type="checkbox"]:checked {
+          background-color: #4169E1;
+          border-color: #4169E1;
+      }
+
+      input[type="checkbox"]:checked::after {
+          content: "";
+          position: absolute;
+          width: 5px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 2px 2px 0;
+          top: 1px;
+          left: 5px;
+          transform: rotate(45deg);
+      }
+
+      .switch {
+          position: relative;
+          display: inline-block;
+          width: 36px;
+          height: 20px;
+      }
+
+      .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+      }
+
+      .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #e5e7eb;
+          transition: .3s;
+          border-radius: 20px;
+      }
+
+      .slider:before {
+          position: absolute;
+          content: "";
+          height: 16px;
+          width: 16px;
+          left: 2px;
+          bottom: 2px;
+          background-color: white;
+          transition: .3s;
+          border-radius: 50%;
+      }
+
+      input:checked + .slider {
+          background-color: #4169E1;
+      }
+
+      input:checked + .slider:before {
+          transform: translateX(16px);
+      }
+
+      input[type="search"]::-webkit-search-decoration,
+      input[type="search"]::-webkit-search-cancel-button,
+      input[type="search"]::-webkit-search-results-button,
+      input[type="search"]::-webkit-search-results-decoration {
+          display: none;
+      }
+
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      .card-hover:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+      }
+    </style>
+  </head>
+  <body class="overflow-x-hidden">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="w-64 bg-white shadow-md z-30 transition-all duration-300 ease-in-out fixed h-full"
+      >
+        <div class="p-4 border-b flex items-center justify-between">
+          <h1 class="text-2xl font-['Pacifico'] text-primary">Sponso</h1>
+          <button
+            id="collapse-sidebar"
+            class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary"
+          >
+            <i class="ri-arrow-left-s-line ri-lg"></i>
+          </button>
+        </div>
+        <nav class="py-4">
+          <ul class="space-y-1">
+            <li>
+              <a
+                href="https://readdy.ai/home/688a2eac-f2e4-4776-9418-91982792a128/72e12b1d-6c73-4370-b2dc-2098cf681704"
+                data-readdy="true"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-dashboard-line"></i>
+                </div>
+                <span class="sidebar-text">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link active flex items-center px-4 py-3 text-sm"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-building-line"></i>
+                </div>
+                <span class="sidebar-text">Advertisers</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-user-star-line"></i>
+                </div>
+                <span class="sidebar-text">Influencers</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-megaphone-line"></i>
+                </div>
+                <span class="sidebar-text">Campaigns</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-money-dollar-circle-line"></i>
+                </div>
+                <span class="sidebar-text">Payments</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-file-text-line"></i>
+                </div>
+                <span class="sidebar-text">Content Approvals</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-bar-chart-line"></i>
+                </div>
+                <span class="sidebar-text">Reports & Analytics</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-customer-service-2-line"></i>
+                </div>
+                <span class="sidebar-text">Support</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600"
+              >
+                <div class="w-6 h-6 flex items-center justify-center mr-3">
+                  <i class="ri-settings-3-line"></i>
+                </div>
+                <span class="sidebar-text">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="absolute bottom-0 w-full p-4 border-t">
+          <div class="flex items-center">
+            <img
+              src="https://readdy.ai/api/search-image?query=professional%252520headshot%252520of%252520a%252520young%252520male%252520admin%252520with%252520short%252520hair%252520and%252520glasses%252520wearing%252520business%252520casual%252520attire%252520against%252520a%252520neutral%252520background%252520high%252520quality%252520professional%252520portrait&width=100&height=100&seq=admin1&orientation=squarish"
+              class="w-10 h-10 rounded-full object-cover object-top"
+              alt="Admin"
+            />
+            <div class="ml-3">
+              <p class="text-sm font-medium sidebar-text">Michael Anderson</p>
+              <p class="text-xs text-gray-500 sidebar-text">Platform Admin</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div
+        id="main-content"
+        class="flex-1 transition-all duration-300 ease-in-out ml-64"
+      >
+        <!-- Header -->
+        <header
+          class="bg-white shadow-sm h-16 fixed top-0 right-0 left-64 z-20 transition-all duration-300 ease-in-out"
+        >
+          <div class="flex items-center justify-between h-full px-6">
+            <div class="flex items-center">
+              <nav class="text-sm text-gray-500 flex items-center">
+                <a
+                  href="https://readdy.ai/home/688a2eac-f2e4-4776-9418-91982792a128/72e12b1d-6c73-4370-b2dc-2098cf681704"
+                  data-readdy="true"
+                  class="hover:text-primary"
+                  >Dashboard</a
+                >
+                <div class="mx-2">
+                  <i class="ri-arrow-right-s-line"></i>
+                </div>
+                <span class="text-gray-800 font-medium">Advertisers</span>
+              </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <button
+                  class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100"
+                >
+                  <div
+                    class="w-5 h-5 flex items-center justify-center relative"
+                  >
+                    <i class="ri-notification-3-line"></i>
+                    <span
+                      class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
+                      >3</span
+                    >
+                  </div>
+                </button>
+              </div>
+              <div class="relative group">
+                <button class="flex items-center space-x-2">
+                  <img
+                    src="https://readdy.ai/api/search-image?query=professional%252520headshot%252520of%252520a%252520young%252520male%252520admin%252520with%252520short%252520hair%252520and%252520glasses%252520wearing%252520business%252520casual%252520attire%252520against%252520a%252520neutral%252520background%252520high%252520quality%252520professional%252520portrait&width=100&height=100&seq=admin1&orientation=squarish"
+                    class="w-8 h-8 rounded-full object-cover object-top"
+                    alt="Admin"
+                  />
+                  <span class="text-sm font-medium">Michael</span>
+                  <div class="w-4 h-4 flex items-center justify-center">
+                    <i class="ri-arrow-down-s-line"></i>
+                  </div>
+                </button>
+                <div
+                  class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-1 hidden group-hover:block z-50"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Profile</a
+                  >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Settings</a
+                  >
+                  <div class="border-t border-gray-100"></div>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >Logout</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="pt-24 pb-8 px-6">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h1 class="text-2xl font-semibold text-gray-800">Advertisers</h1>
+              <p class="text-gray-500">
+                Manage and monitor all advertisers on the platform
+              </p>
+            </div>
+            <button
+              class="px-4 py-2 bg-primary text-white text-sm font-medium rounded shadow-sm hover:bg-primary/90 flex items-center !rounded-button whitespace-nowrap"
+            >
+              <i class="ri-add-line mr-1"></i> Add New Advertiser
+            </button>
+          </div>
+
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+          >
+            <div
+              class="bg-white rounded shadow p-6 transition-all duration-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-gray-500 text-sm font-medium">
+                  Total Advertisers
+                </h2>
+                <div
+                  class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-primary"
+                >
+                  <i class="ri-building-line ri-lg"></i>
+                </div>
+              </div>
+              <div class="flex items-end">
+                <span class="text-3xl font-semibold text-gray-800">1,284</span>
+                <span class="ml-2 text-sm text-green-500 flex items-center">
+                  <i class="ri-arrow-up-s-line"></i> 12.5%
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">vs previous month</p>
+            </div>
+
+            <div
+              class="bg-white rounded shadow p-6 transition-all duration-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-gray-500 text-sm font-medium">
+                  Active Advertisers
+                </h2>
+                <div
+                  class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600"
+                >
+                  <i class="ri-check-double-line ri-lg"></i>
+                </div>
+              </div>
+              <div class="flex items-end">
+                <span class="text-3xl font-semibold text-gray-800">958</span>
+                <span class="ml-2 text-sm text-green-500 flex items-center">
+                  <i class="ri-arrow-up-s-line"></i> 8.3%
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">vs previous month</p>
+            </div>
+
+            <div
+              class="bg-white rounded shadow p-6 transition-all duration-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-gray-500 text-sm font-medium">Total Budget</h2>
+                <div
+                  class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600"
+                >
+                  <i class="ri-money-dollar-circle-line ri-lg"></i>
+                </div>
+              </div>
+              <div class="flex items-end">
+                <span class="text-3xl font-semibold text-gray-800">$12.8M</span>
+                <span class="ml-2 text-sm text-green-500 flex items-center">
+                  <i class="ri-arrow-up-s-line"></i> 15.7%
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">vs previous month</p>
+            </div>
+
+            <div
+              class="bg-white rounded shadow p-6 transition-all duration-200 card-hover"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-gray-500 text-sm font-medium">
+                  Avg. Performance
+                </h2>
+                <div
+                  class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600"
+                >
+                  <i class="ri-line-chart-line ri-lg"></i>
+                </div>
+              </div>
+              <div class="flex items-end">
+                <span class="text-3xl font-semibold text-gray-800">87.4%</span>
+                <span class="ml-2 text-sm text-red-500 flex items-center">
+                  <i class="ri-arrow-down-s-line"></i> 2.1%
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">vs previous month</p>
+            </div>
+          </div>
+
+          <!-- Filters Section -->
+          <div class="bg-white rounded shadow mb-6">
+            <div class="p-4 border-b">
+              <div
+                class="flex flex-col md:flex-row md:items-center justify-between gap-4"
+              >
+                <div class="relative w-full md:w-72">
+                  <input
+                    type="search"
+                    placeholder="Search advertisers..."
+                    class="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                  />
+                  <div
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400"
+                  >
+                    <i class="ri-search-line"></i>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <div class="relative">
+                    <button
+                      id="status-filter-btn"
+                      class="px-3 py-2 border border-gray-200 rounded text-sm flex items-center !rounded-button whitespace-nowrap"
+                    >
+                      <span>Status: All</span>
+                      <i class="ri-arrow-down-s-line ml-2"></i>
+                    </button>
+                    <div
+                      id="status-filter-dropdown"
+                      class="absolute right-0 mt-1 w-48 bg-white rounded shadow-lg py-1 hidden z-10"
+                    >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >All</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Active</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Inactive</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Pending</a
+                      >
+                    </div>
+                  </div>
+                  <div class="relative">
+                    <button
+                      id="industry-filter-btn"
+                      class="px-3 py-2 border border-gray-200 rounded text-sm flex items-center !rounded-button whitespace-nowrap"
+                    >
+                      <span>Industry: All</span>
+                      <i class="ri-arrow-down-s-line ml-2"></i>
+                    </button>
+                    <div
+                      id="industry-filter-dropdown"
+                      class="absolute right-0 mt-1 w-48 bg-white rounded shadow-lg py-1 hidden z-10"
+                    >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >All</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Fashion & Apparel</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Technology</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Food & Beverage</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Beauty & Cosmetics</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Luxury & Fashion</a
+                      >
+                    </div>
+                  </div>
+                  <button
+                    class="px-3 py-2 border border-gray-200 rounded text-sm flex items-center !rounded-button whitespace-nowrap"
+                  >
+                    <i class="ri-calendar-line mr-2"></i>
+                    <span>Date Range</span>
+                  </button>
+                  <div class="relative">
+                    <button
+                      id="sort-btn"
+                      class="px-3 py-2 border border-gray-200 rounded text-sm flex items-center !rounded-button whitespace-nowrap"
+                    >
+                      <span>Sort By: Name</span>
+                      <i class="ri-arrow-down-s-line ml-2"></i>
+                    </button>
+                    <div
+                      id="sort-dropdown"
+                      class="absolute right-0 mt-1 w-48 bg-white rounded shadow-lg py-1 hidden z-10"
+                    >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Name</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Date Added</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Budget</a
+                      >
+                      <a
+                        href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >Performance</a
+                      >
+                    </div>
+                  </div>
+                  <button
+                    id="advanced-filter-btn"
+                    class="px-3 py-2 border border-gray-200 rounded text-sm flex items-center !rounded-button whitespace-nowrap"
+                  >
+                    <i class="ri-filter-3-line mr-2"></i>
+                    <span>Advanced Filters</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="advanced-filters" class="p-4 border-t bg-gray-50 hidden">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Budget Range</label
+                  >
+                  <div class="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      placeholder="Min"
+                      class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                    />
+                    <span>-</span>
+                    <input
+                      type="text"
+                      placeholder="Max"
+                      class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Campaign Count</label
+                  >
+                  <div class="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      placeholder="Min"
+                      class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                    />
+                    <span>-</span>
+                    <input
+                      type="text"
+                      placeholder="Max"
+                      class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Performance Score</label
+                  >
+                  <div class="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      placeholder="Min"
+                      class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                    />
+                    <span>-</span>
+                    <input
+                      type="text"
+                      placeholder="Max"
+                      class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end mt-4 space-x-2">
+                <button
+                  class="px-4 py-2 border border-gray-200 text-gray-700 text-sm font-medium rounded !rounded-button whitespace-nowrap"
+                >
+                  Reset
+                </button>
+                <button
+                  class="px-4 py-2 bg-primary text-white text-sm font-medium rounded !rounded-button whitespace-nowrap"
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Advertisers Table -->
+          <div class="bg-white rounded shadow mb-8">
+            <div class="p-4 border-b flex items-center justify-between">
+              <div class="flex items-center">
+                <input type="checkbox" id="select-all" class="mr-3" />
+                <div class="relative">
+                  <button
+                    id="bulk-actions-btn"
+                    class="px-3 py-1 border border-gray-200 rounded text-sm flex items-center !rounded-button whitespace-nowrap"
+                  >
+                    <span>Bulk Actions</span>
+                    <i class="ri-arrow-down-s-line ml-2"></i>
+                  </button>
+                  <div
+                    id="bulk-actions-dropdown"
+                    class="absolute left-0 mt-1 w-48 bg-white rounded shadow-lg py-1 hidden z-10"
+                  >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >Change Status</a
+                    >
+                    <a
+                      href="#"
+                      class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                      >Delete Selected</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="text-sm text-gray-500">
+                Showing 1-10 of 1,284 advertisers
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr
+                    class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    <th class="px-6 py-3 w-10">
+                      <span class="sr-only">Select</span>
+                    </th>
+                    <th class="px-6 py-3">Advertiser</th>
+                    <th class="px-6 py-3">Industry</th>
+                    <th class="px-6 py-3">Campaigns</th>
+                    <th class="px-6 py-3">Total Budget</th>
+                    <th class="px-6 py-3">Performance</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium"
+                        >
+                          NB
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Nike Brands
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Jun 12, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                      Sports & Apparel
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">28</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$1,250,400</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 92%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">92%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium"
+                        >
+                          SB
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Starbucks Coffee
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: May 28, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                      Food & Beverage
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">16</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$987,500</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 88%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">88%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium"
+                        >
+                          AP
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Apple Inc.
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Apr 15, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">Technology</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">12</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$873,200</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 95%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">95%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-medium"
+                        >
+                          LV
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Louis Vuitton
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Mar 10, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                      Luxury & Fashion
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">9</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$768,900</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 90%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">90%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-medium"
+                        >
+                          SP
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Sephora
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Feb 25, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                      Beauty & Cosmetics
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">15</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$542,300</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 86%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">86%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 font-medium"
+                        >
+                          AM
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Amazon
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Feb 10, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">E-commerce</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">22</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$1,125,800</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 89%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">89%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-medium"
+                        >
+                          SA
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Samsung Electronics
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Jan 18, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">Technology</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">18</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$965,400</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 91%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">91%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-medium"
+                        >
+                          HM
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            H&M
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Jan 05, 2024
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                      Fashion & Apparel
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">14</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$432,700</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-yellow-500 rounded-full"
+                            style="width: 75%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">75%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+                      >
+                        <span class="status-dot status-pending"></span>
+                        Pending
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-medium"
+                        >
+                          AD
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Adidas
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Dec 20, 2023
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                      Sports & Apparel
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">20</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$875,600</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-green-500 rounded-full"
+                            style="width: 87%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">87%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                      >
+                        <span class="status-dot status-active"></span>
+                        Active
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <input type="checkbox" class="advertiser-checkbox" />
+                    </td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div
+                          class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-medium"
+                        >
+                          MS
+                        </div>
+                        <div class="ml-3">
+                          <div class="text-sm font-medium text-gray-800">
+                            Microsoft
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Added: Dec 05, 2023
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-700">Technology</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">8</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">$356,200</td>
+                    <td class="px-6 py-4">
+                      <div class="flex items-center">
+                        <div class="w-16 h-2 bg-gray-200 rounded-full mr-2">
+                          <div
+                            class="h-full bg-red-500 rounded-full"
+                            style="width: 45%"
+                          ></div>
+                        </div>
+                        <span class="text-sm text-gray-700">45%</span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800"
+                      >
+                        <span class="status-dot status-inactive"></span>
+                        Inactive
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                      <div class="flex space-x-2">
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-eye-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full"
+                        >
+                          <i class="ri-edit-line"></i>
+                        </button>
+                        <button
+                          class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full"
+                        >
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="p-4 border-t flex items-center justify-between">
+              <div class="text-sm text-gray-500">
+                Showing 1-10 of 1,284 advertisers
+              </div>
+              <div class="flex space-x-1">
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded text-gray-400 hover:bg-gray-100"
+                >
+                  <i class="ri-arrow-left-s-line"></i>
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white"
+                >
+                  1
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
+                >
+                  2
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
+                >
+                  3
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
+                >
+                  4
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"
+                >
+                  5
+                </button>
+                <button
+                  class="w-8 h-8 flex items-center justify-center rounded text-gray-400 hover:bg-gray-100"
+                >
+                  <i class="ri-arrow-right-s-line"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Chart -->
+          <div class="bg-white rounded shadow mb-8">
+            <div class="p-6 border-b">
+              <div class="flex items-center justify-between">
+                <h2 class="text-lg font-medium text-gray-800">
+                  Advertiser Performance Metrics
+                </h2>
+                <div class="flex space-x-2">
+                  <button
+                    class="px-3 py-1 text-xs font-medium text-primary bg-blue-50 rounded-full !rounded-button whitespace-nowrap"
+                  >
+                    Last 30 Days
+                  </button>
+                  <button
+                    class="px-3 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-full !rounded-button whitespace-nowrap"
+                  >
+                    Last Quarter
+                  </button>
+                  <button
+                    class="px-3 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-full !rounded-button whitespace-nowrap"
+                  >
+                    Last Year
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="p-6">
+              <div id="performance-chart" class="w-full h-80"></div>
+            </div>
+          </div>
+
+          <!-- Industry Distribution -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded shadow">
+              <div class="p-6 border-b">
+                <h2 class="text-lg font-medium text-gray-800">
+                  Industry Distribution
+                </h2>
+              </div>
+              <div class="p-6">
+                <div id="industry-chart" class="w-full h-72"></div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded shadow">
+              <div class="p-6 border-b">
+                <h2 class="text-lg font-medium text-gray-800">
+                  Top Spending Advertisers
+                </h2>
+              </div>
+              <div class="p-6">
+                <div id="spending-chart" class="w-full h-72"></div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script id="sidebar-toggle">
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("sidebar");
+        const mainContent = document.getElementById("main-content");
+        const collapseBtn = document.getElementById("collapse-sidebar");
+        const sidebarTexts = document.querySelectorAll(".sidebar-text");
+        const header = document.querySelector("header");
+
+        collapseBtn.addEventListener("click", function () {
+          sidebar.classList.toggle("w-64");
+          sidebar.classList.toggle("w-20");
+
+          if (sidebar.classList.contains("w-20")) {
+            collapseBtn.innerHTML = '<i class="ri-arrow-right-s-line ri-lg"></i>';
+            sidebarTexts.forEach((text) => {
+              text.classList.add("hidden");
+            });
+            document.getElementById("main-content").classList.remove("ml-64");
+            document.getElementById("main-content").classList.add("ml-20");
+            header.classList.remove("left-64");
+            header.classList.add("left-20");
+          } else {
+            collapseBtn.innerHTML = '<i class="ri-arrow-left-s-line ri-lg"></i>';
+            sidebarTexts.forEach((text) => {
+              text.classList.remove("hidden");
+            });
+            document.getElementById("main-content").classList.remove("ml-20");
+            document.getElementById("main-content").classList.add("ml-64");
+            header.classList.remove("left-20");
+            header.classList.add("left-64");
+          }
+        });
+      });
+    </script>
+
+    <script id="dropdown-toggles">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Status filter dropdown
+        const statusFilterBtn = document.getElementById("status-filter-btn");
+        const statusFilterDropdown = document.getElementById(
+          "status-filter-dropdown",
+        );
+
+        if (statusFilterBtn && statusFilterDropdown) {
+          statusFilterBtn.addEventListener("click", function () {
+            statusFilterDropdown.classList.toggle("hidden");
+          });
+        }
+
+        // Industry filter dropdown
+        const industryFilterBtn = document.getElementById("industry-filter-btn");
+        const industryFilterDropdown = document.getElementById(
+          "industry-filter-dropdown",
+        );
+
+        if (industryFilterBtn && industryFilterDropdown) {
+          industryFilterBtn.addEventListener("click", function () {
+            industryFilterDropdown.classList.toggle("hidden");
+          });
+        }
+
+        // Sort dropdown
+        const sortBtn = document.getElementById("sort-btn");
+        const sortDropdown = document.getElementById("sort-dropdown");
+
+        if (sortBtn && sortDropdown) {
+          sortBtn.addEventListener("click", function () {
+            sortDropdown.classList.toggle("hidden");
+          });
+        }
+
+        // Bulk actions dropdown
+        const bulkActionsBtn = document.getElementById("bulk-actions-btn");
+        const bulkActionsDropdown = document.getElementById("bulk-actions-dropdown");
+
+        if (bulkActionsBtn && bulkActionsDropdown) {
+          bulkActionsBtn.addEventListener("click", function () {
+            bulkActionsDropdown.classList.toggle("hidden");
+          });
+        }
+
+        // Advanced filters toggle
+        const advancedFilterBtn = document.getElementById("advanced-filter-btn");
+        const advancedFilters = document.getElementById("advanced-filters");
+
+        if (advancedFilterBtn && advancedFilters) {
+          advancedFilterBtn.addEventListener("click", function () {
+            advancedFilters.classList.toggle("hidden");
+          });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener("click", function (event) {
+          if (
+            statusFilterBtn &&
+            !statusFilterBtn.contains(event.target) &&
+            !statusFilterDropdown.contains(event.target)
+          ) {
+            statusFilterDropdown.classList.add("hidden");
+          }
+
+          if (
+            industryFilterBtn &&
+            !industryFilterBtn.contains(event.target) &&
+            !industryFilterDropdown.contains(event.target)
+          ) {
+            industryFilterDropdown.classList.add("hidden");
+          }
+
+          if (
+            sortBtn &&
+            !sortBtn.contains(event.target) &&
+            !sortDropdown.contains(event.target)
+          ) {
+            sortDropdown.classList.add("hidden");
+          }
+
+          if (
+            bulkActionsBtn &&
+            !bulkActionsBtn.contains(event.target) &&
+            !bulkActionsDropdown.contains(event.target)
+          ) {
+            bulkActionsDropdown.classList.add("hidden");
+          }
+        });
+
+        // Select all checkboxes
+        const selectAllCheckbox = document.getElementById("select-all");
+        const advertiserCheckboxes = document.querySelectorAll(
+          ".advertiser-checkbox",
+        );
+
+        if (selectAllCheckbox) {
+          selectAllCheckbox.addEventListener("change", function () {
+            advertiserCheckboxes.forEach((checkbox) => {
+              checkbox.checked = selectAllCheckbox.checked;
+            });
+          });
+        }
+      });
+    </script>
+
+    <script id="charts-init">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Performance Chart
+        const performanceChart = echarts.init(
+          document.getElementById("performance-chart"),
+        );
+        const performanceOption = {
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderColor: "#E5E7EB",
+            borderWidth: 1,
+            textStyle: {
+              color: "#1F2937",
+            },
+          },
+          legend: {
+            data: ["ROI", "Engagement Rate", "Conversion Rate"],
+            bottom: "0%",
+            textStyle: {
+              color: "#6B7280",
+            },
+          },
+          grid: {
+            left: "3%",
+            right: "3%",
+            bottom: "10%",
+            top: "3%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: [
+              "Nike",
+              "Starbucks",
+              "Apple",
+              "Louis Vuitton",
+              "Sephora",
+              "Amazon",
+              "Samsung",
+              "H&M",
+              "Adidas",
+              "Microsoft",
+            ],
+            axisLine: {
+              lineStyle: {
+                color: "#E5E7EB",
+              },
+            },
+            axisLabel: {
+              color: "#6B7280",
+              rotate: 45,
+            },
+          },
+          yAxis: {
+            type: "value",
+            axisLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              lineStyle: {
+                color: "#F3F4F6",
+              },
+            },
+            axisLabel: {
+              color: "#6B7280",
+              formatter: "{value}%",
+            },
+          },
+          series: [
+            {
+              name: "ROI",
+              type: "line",
+              smooth: true,
+              symbol: "none",
+              lineStyle: {
+                width: 3,
+                color: "rgba(87, 181, 231, 1)",
+              },
+              data: [92, 88, 95, 90, 86, 89, 91, 75, 87, 45],
+            },
+            {
+              name: "Engagement Rate",
+              type: "line",
+              smooth: true,
+              symbol: "none",
+              lineStyle: {
+                width: 3,
+                color: "rgba(141, 211, 199, 1)",
+              },
+              data: [85, 82, 90, 87, 80, 84, 88, 70, 82, 40],
+            },
+            {
+              name: "Conversion Rate",
+              type: "line",
+              smooth: true,
+              symbol: "none",
+              lineStyle: {
+                width: 3,
+                color: "rgba(251, 191, 114, 1)",
+              },
+              data: [78, 75, 85, 80, 72, 76, 82, 65, 75, 35],
+            },
+          ],
+        };
+        performanceChart.setOption(performanceOption);
+
+        // Industry Chart
+        const industryChart = echarts.init(document.getElementById("industry-chart"));
+        const industryOption = {
+          animation: false,
+          tooltip: {
+            trigger: "item",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderColor: "#E5E7EB",
+            borderWidth: 1,
+            textStyle: {
+              color: "#1F2937",
+            },
+          },
+          legend: {
+            orient: "vertical",
+            right: "5%",
+            top: "center",
+            textStyle: {
+              color: "#6B7280",
+            },
+          },
+          series: [
+            {
+              name: "Industry Distribution",
+              type: "pie",
+              radius: ["40%", "70%"],
+              center: ["40%", "50%"],
+              avoidLabelOverlap: false,
+              itemStyle: {
+                borderRadius: 8,
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+              label: {
+                show: false,
+              },
+              emphasis: {
+                label: {
+                  show: false,
+                },
+              },
+              labelLine: {
+                show: false,
+              },
+              data: [
+                {
+                  value: 28,
+                  name: "Technology",
+                  itemStyle: { color: "rgba(87, 181, 231, 1)" },
+                },
+                {
+                  value: 22,
+                  name: "Fashion & Apparel",
+                  itemStyle: { color: "rgba(141, 211, 199, 1)" },
+                },
+                {
+                  value: 18,
+                  name: "Food & Beverage",
+                  itemStyle: { color: "rgba(251, 191, 114, 1)" },
+                },
+                {
+                  value: 15,
+                  name: "Beauty & Cosmetics",
+                  itemStyle: { color: "rgba(252, 141, 98, 1)" },
+                },
+                {
+                  value: 10,
+                  name: "Luxury & Fashion",
+                  itemStyle: { color: "rgba(166, 216, 84, 1)" },
+                },
+                {
+                  value: 7,
+                  name: "Others",
+                  itemStyle: { color: "rgba(231, 138, 195, 1)" },
+                },
+              ],
+            },
+          ],
+        };
+        industryChart.setOption(industryOption);
+
+        // Spending Chart
+        const spendingChart = echarts.init(document.getElementById("spending-chart"));
+        const spendingOption = {
+          animation: false,
+          tooltip: {
+            trigger: "axis",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderColor: "#E5E7EB",
+            borderWidth: 1,
+            textStyle: {
+              color: "#1F2937",
+            },
+          },
+          grid: {
+            left: "3%",
+            right: "3%",
+            bottom: "3%",
+            top: "3%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "value",
+            axisLine: {
+              lineStyle: {
+                color: "#E5E7EB",
+              },
+            },
+            axisLabel: {
+              color: "#6B7280",
+              formatter: "${value}K",
+            },
+            splitLine: {
+              lineStyle: {
+                color: "#F3F4F6",
+              },
+            },
+          },
+          yAxis: {
+            type: "category",
+            data: [
+              "Nike",
+              "Amazon",
+              "Apple",
+              "Samsung",
+              "Adidas",
+              "Louis Vuitton",
+              "Starbucks",
+              "Sephora",
+              "H&M",
+              "Microsoft",
+            ],
+            axisLine: {
+              lineStyle: {
+                color: "#E5E7EB",
+              },
+            },
+            axisLabel: {
+              color: "#6B7280",
+            },
+          },
+          series: [
+            {
+              name: "Total Budget",
+              type: "bar",
+              barWidth: "60%",
+              data: [1250, 1125, 873, 965, 875, 768, 987, 542, 432, 356],
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                  { offset: 0, color: "rgba(87, 181, 231, 0.8)" },
+                  { offset: 1, color: "rgba(87, 181, 231, 0.3)" },
+                ]),
+                borderRadius: [0, 4, 4, 0],
+              },
+            },
+          ],
+        };
+        spendingChart.setOption(spendingOption);
+
+        // Handle window resize
+        window.addEventListener("resize", function () {
+          performanceChart.resize();
+          industryChart.resize();
+          spendingChart.resize();
+        });
+      });
+    </script>
+  </body>
+</html>
