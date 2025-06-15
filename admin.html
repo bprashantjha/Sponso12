@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sponso - Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4169E1',secondary:'#6C87E8'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+background-color: #f9fafb;
+}
+.sidebar-link.active {
+background-color: rgba(65, 105, 225, 0.1);
+color: #4169E1;
+font-weight: 500;
+}
+.sidebar-link:hover:not(.active) {
+background-color: rgba(65, 105, 225, 0.05);
+}
+.status-dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 6px;
+}
+.status-active { background-color: #10b981; }
+.status-pending { background-color: #f59e0b; }
+.status-suspended { background-color: #ef4444; }
+input[type="checkbox"] {
+appearance: none;
+width: 18px;
+height: 18px;
+border: 2px solid #d1d5db;
+border-radius: 4px;
+position: relative;
+cursor: pointer;
+}
+input[type="checkbox"]:checked {
+background-color: #4169E1;
+border-color: #4169E1;
+}
+input[type="checkbox"]:checked::after {
+content: "";
+position: absolute;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+top: 1px;
+left: 5px;
+transform: rotate(45deg);
+}
+.switch {
+position: relative;
+display: inline-block;
+width: 36px;
+height: 20px;
+}
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #e5e7eb;
+transition: .3s;
+border-radius: 20px;
+}
+.slider:before {
+position: absolute;
+content: "";
+height: 16px;
+width: 16px;
+left: 2px;
+bottom: 2px;
+background-color: white;
+transition: .3s;
+border-radius: 50%;
+}
+input:checked + .slider {
+background-color: #4169E1;
+}
+input:checked + .slider:before {
+transform: translateX(16px);
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+display: none;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.card-hover:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+}
+</style>
+</head>
+<body class="overflow-x-hidden">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 bg-white shadow-md z-30 transition-all duration-300 ease-in-out fixed h-full">
+<div class="p-4 border-b flex items-center justify-between">
+<h1 class="text-2xl font-['Pacifico'] text-primary">Sponso</h1>
+<button id="collapse-sidebar" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary">
+<i class="ri-arrow-left-s-line ri-lg"></i>
+</button>
+</div>
+<nav class="py-4">
+<ul class="space-y-1">
+<li>
+<a href="#" class="sidebar-link active flex items-center px-4 py-3 text-sm">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-dashboard-line"></i>
+</div>
+<span class="sidebar-text">Dashboard</span>
+</a>
+</li>
+<li>
+<a href="https://readdy.ai/home/688a2eac-f2e4-4776-9418-91982792a128/6276071e-7a37-4cfa-8028-191d703d1e00" data-readdy="true" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-building-line"></i>
+</div>
+<span class="sidebar-text">Advertisers</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-user-star-line"></i>
+</div>
+<span class="sidebar-text">Influencers</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-megaphone-line"></i>
+</div>
+<span class="sidebar-text">Campaigns</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-money-dollar-circle-line"></i>
+</div>
+<span class="sidebar-text">Payments</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-file-text-line"></i>
+</div>
+<span class="sidebar-text">Content Approvals</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-bar-chart-line"></i>
+</div>
+<span class="sidebar-text">Reports & Analytics</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-customer-service-2-line"></i>
+</div>
+<span class="sidebar-text">Support</span>
+</a>
+</li>
+<li>
+<a href="#" class="sidebar-link flex items-center px-4 py-3 text-sm text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center mr-3">
+<i class="ri-settings-3-line"></i>
+</div>
+<span class="sidebar-text">Settings</span>
+</a>
+</li>
+</ul>
+</nav>
+<div class="absolute bottom-0 w-full p-4 border-t">
+<div class="flex items-center">
+<img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520a%2520young%2520male%2520admin%2520with%2520short%2520hair%2520and%2520glasses%2520wearing%2520business%2520casual%2520attire%2520against%2520a%2520neutral%2520background%2520high%2520quality%2520professional%2520portrait&width=100&height=100&seq=admin1&orientation=squarish" class="w-10 h-10 rounded-full object-cover object-top" alt="Admin">
+<div class="ml-3">
+<p class="text-sm font-medium sidebar-text">Michael Anderson</p>
+<p class="text-xs text-gray-500 sidebar-text">Platform Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<div id="main-content" class="flex-1 transition-all duration-300 ease-in-out ml-64">
+<!-- Header -->
+<header class="bg-white shadow-sm h-16 fixed top-0 right-0 left-64 z-20 transition-all duration-300 ease-in-out">
+<div class="flex items-center justify-between h-full px-6">
+<div class="flex items-center w-1/3">
+<div class="relative w-full max-w-md">
+<input type="search" placeholder="Search..." class="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:border-primary">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+<div class="w-5 h-5 flex items-center justify-center relative">
+<i class="ri-notification-3-line"></i>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+</div>
+</button>
+</div>
+<div class="relative group">
+<button class="flex items-center space-x-2">
+<img src="https://readdy.ai/api/search-image?query=professional%2520headshot%2520of%2520a%2520young%2520male%2520admin%2520with%2520short%2520hair%2520and%2520glasses%2520wearing%2520business%2520casual%2520attire%2520against%2520a%2520neutral%2520background%2520high%2520quality%2520professional%2520portrait&width=100&height=100&seq=admin1&orientation=squarish" class="w-8 h-8 rounded-full object-cover object-top" alt="Admin">
+<span class="text-sm font-medium">Michael</span>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-1 hidden group-hover:block z-50">
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+<div class="border-t border-gray-100"></div>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="pt-24 pb-8 px-6">
+<div class="mb-6">
+<h1 class="text-2xl font-semibold text-gray-800">Dashboard Overview</h1>
+<p class="text-gray-500">Welcome back, Michael! Here's what's happening today.</p>
+</div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-white rounded shadow p-6 transition-all duration-200 card-hover">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-gray-500 text-sm font-medium">Total Advertisers</h2>
+<div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-primary">
+<i class="ri-building-line ri-lg"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-3xl font-semibold text-gray-800">1,284</span>
+<span class="ml-2 text-sm text-green-500 flex items-center">
+<i class="ri-arrow-up-s-line"></i> 12.5%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">vs previous month</p>
+</div>
+<div class="bg-white rounded shadow p-6 transition-all duration-200 card-hover">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-gray-500 text-sm font-medium">Total Influencers</h2>
+<div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+<i class="ri-user-star-line ri-lg"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-3xl font-semibold text-gray-800">5,721</span>
+<span class="ml-2 text-sm text-green-500 flex items-center">
+<i class="ri-arrow-up-s-line"></i> 8.3%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">vs previous month</p>
+</div>
+<div class="bg-white rounded shadow p-6 transition-all duration-200 card-hover">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-gray-500 text-sm font-medium">Active Campaigns</h2>
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<i class="ri-megaphone-line ri-lg"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-3xl font-semibold text-gray-800">342</span>
+<span class="ml-2 text-sm text-green-500 flex items-center">
+<i class="ri-arrow-up-s-line"></i> 5.7%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">vs previous month</p>
+</div>
+<div class="bg-white rounded shadow p-6 transition-all duration-200 card-hover">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-gray-500 text-sm font-medium">Monthly Revenue</h2>
+<div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+<i class="ri-money-dollar-circle-line ri-lg"></i>
+</div>
+</div>
+<div class="flex items-end">
+<span class="text-3xl font-semibold text-gray-800">$287,492</span>
+<span class="ml-2 text-sm text-red-500 flex items-center">
+<i class="ri-arrow-down-s-line"></i> 2.1%
+</span>
+</div>
+<p class="text-xs text-gray-500 mt-1">vs previous month</p>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<div class="bg-white rounded shadow p-6 lg:col-span-2">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-medium text-gray-800">Daily User Activity</h2>
+<div class="flex space-x-2">
+<button class="px-3 py-1 text-xs font-medium text-primary bg-blue-50 rounded-full !rounded-button whitespace-nowrap">Last 7 Days</button>
+<button class="px-3 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-full !rounded-button whitespace-nowrap">Last 30 Days</button>
+<button class="px-3 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-full !rounded-button whitespace-nowrap">All Time</button>
+</div>
+</div>
+<div id="activity-chart" class="w-full h-72"></div>
+</div>
+<div class="bg-white rounded shadow p-6">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-medium text-gray-800">Campaign Performance</h2>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full">
+<i class="ri-more-2-fill"></i>
+</button>
+</div>
+<div id="campaign-chart" class="w-full h-72"></div>
+</div>
+</div>
+<!-- Top Performers Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+<div class="bg-white rounded shadow p-6">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-medium text-gray-800">Top Performing Influencers</h2>
+<a href="#" class="text-sm text-primary font-medium hover:underline">View All</a>
+</div>
+<div class="space-y-4">
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<img src="https://readdy.ai/api/search-image?query=professional%2520portrait%2520of%2520a%2520young%2520female%2520influencer%2520with%2520long%2520blonde%2520hair%2520smiling%2520at%2520camera%2520natural%2520lighting%2520neutral%2520background%2520high%2520quality%2520professional%2520portrait&width=100&height=100&seq=inf1&orientation=squarish" class="w-12 h-12 rounded-full object-cover object-top" alt="Influencer">
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Emma Thompson</h3>
+<span class="text-sm text-green-500 font-medium">+24.8%</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Fashion & Lifestyle</span>
+<span class="mx-2">•</span>
+<span>2.4M followers</span>
+</div>
+</div>
+</div>
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<img src="https://readdy.ai/api/search-image?query=professional%2520portrait%2520of%2520a%2520young%2520male%2520influencer%2520with%2520short%2520dark%2520hair%2520and%2520casual%2520style%2520natural%2520lighting%2520neutral%2520background%2520high%2520quality%2520professional%2520portrait&width=100&height=100&seq=inf2&orientation=squarish" class="w-12 h-12 rounded-full object-cover object-top" alt="Influencer">
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">James Wilson</h3>
+<span class="text-sm text-green-500 font-medium">+18.3%</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Tech & Gaming</span>
+<span class="mx-2">•</span>
+<span>1.8M followers</span>
+</div>
+</div>
+</div>
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<img src="https://readdy.ai/api/search-image?query=professional%2520portrait%2520of%2520a%2520young%2520female%2520influencer%2520with%2520curly%2520hair%2520and%2520casual%2520style%2520natural%2520lighting%2520neutral%2520background%2520high%2520quality%2520professional%2520portrait&width=100&height=100&seq=inf3&orientation=squarish" class="w-12 h-12 rounded-full object-cover object-top" alt="Influencer">
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Sophia Martinez</h3>
+<span class="text-sm text-green-500 font-medium">+15.7%</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Beauty & Cosmetics</span>
+<span class="mx-2">•</span>
+<span>3.1M followers</span>
+</div>
+</div>
+</div>
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<img src="https://readdy.ai/api/search-image?query=professional%2520portrait%2520of%2520a%2520young%2520male%2520influencer%2520with%2520glasses%2520and%2520business%2520casual%2520attire%2520natural%2520lighting%2520neutral%2520background%2520high%2520quality%2520professional%2520portrait&width=100&height=100&seq=inf4&orientation=squarish" class="w-12 h-12 rounded-full object-cover object-top" alt="Influencer">
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Daniel Roberts</h3>
+<span class="text-sm text-green-500 font-medium">+12.9%</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Business & Finance</span>
+<span class="mx-2">•</span>
+<span>1.2M followers</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded shadow p-6">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-medium text-gray-800">Top Advertisers</h2>
+<a href="#" class="text-sm text-primary font-medium hover:underline">View All</a>
+</div>
+<div class="space-y-4">
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">NB</div>
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Nike Brands</h3>
+<span class="text-sm text-gray-500 font-medium">$125,400</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Sports & Apparel</span>
+<span class="mx-2">•</span>
+<span>28 campaigns</span>
+</div>
+</div>
+</div>
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-medium">SB</div>
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Starbucks Coffee</h3>
+<span class="text-sm text-gray-500 font-medium">$98,750</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Food & Beverage</span>
+<span class="mx-2">•</span>
+<span>16 campaigns</span>
+</div>
+</div>
+</div>
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-medium">AP</div>
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Apple Inc.</h3>
+<span class="text-sm text-gray-500 font-medium">$87,320</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Technology</span>
+<span class="mx-2">•</span>
+<span>12 campaigns</span>
+</div>
+</div>
+</div>
+<div class="flex items-center p-3 hover:bg-gray-50 rounded transition-colors">
+<div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-medium">LV</div>
+<div class="ml-4 flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-medium text-gray-800">Louis Vuitton</h3>
+<span class="text-sm text-gray-500 font-medium">$76,890</span>
+</div>
+<div class="flex items-center text-sm text-gray-500 mt-1">
+<span>Luxury & Fashion</span>
+<span class="mx-2">•</span>
+<span>9 campaigns</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Campaigns Section -->
+<div class="bg-white rounded shadow mb-8">
+<div class="p-6 border-b">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-medium text-gray-800">Recent Campaigns</h2>
+<button class="px-4 py-2 bg-primary text-white text-sm font-medium rounded !rounded-button whitespace-nowrap">
+<i class="ri-add-line mr-1"></i> New Campaign
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full">
+<thead>
+<tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+<th class="px-6 py-3">Campaign</th>
+<th class="px-6 py-3">Advertiser</th>
+<th class="px-6 py-3">Budget</th>
+<th class="px-6 py-3">Influencers</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3">Timeline</th>
+<th class="px-6 py-3">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200">
+<tr class="hover:bg-gray-50">
+<td class="px-6 py-4">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded bg-blue-100 flex items-center justify-center text-blue-600">
+<i class="ri-shopping-bag-line"></i>
+</div>
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-800">Summer Collection Launch</div>
+<div class="text-xs text-gray-500">Fashion & Apparel</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Nike Brands</td>
+<td class="px-6 py-4 text-sm text-gray-700">$45,000</td>
+<td class="px-6 py-4 text-sm text-gray-700">12 / 15</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+<span class="status-dot status-active"></span>
+Active
+</span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Jun 15 - Jul 15</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex space-x-2">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-edit-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-6 py-4">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded bg-green-100 flex items-center justify-center text-green-600">
+<i class="ri-cup-line"></i>
+</div>
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-800">New Frappuccino Promotion</div>
+<div class="text-xs text-gray-500">Food & Beverage</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Starbucks Coffee</td>
+<td class="px-6 py-4 text-sm text-gray-700">$32,500</td>
+<td class="px-6 py-4 text-sm text-gray-700">8 / 10</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+<span class="status-dot status-active"></span>
+Active
+</span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Jun 10 - Jul 10</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex space-x-2">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-edit-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-6 py-4">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded bg-purple-100 flex items-center justify-center text-purple-600">
+<i class="ri-smartphone-line"></i>
+</div>
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-800">iPhone 15 Pro Launch</div>
+<div class="text-xs text-gray-500">Technology</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Apple Inc.</td>
+<td class="px-6 py-4 text-sm text-gray-700">$87,000</td>
+<td class="px-6 py-4 text-sm text-gray-700">20 / 25</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+<span class="status-dot status-pending"></span>
+Pending
+</span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Jul 01 - Aug 15</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex space-x-2">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-edit-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-6 py-4">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded bg-red-100 flex items-center justify-center text-red-600">
+<i class="ri-gift-line"></i>
+</div>
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-800">Holiday Collection Preview</div>
+<div class="text-xs text-gray-500">Luxury & Fashion</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Louis Vuitton</td>
+<td class="px-6 py-4 text-sm text-gray-700">$65,000</td>
+<td class="px-6 py-4 text-sm text-gray-700">5 / 8</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+<span class="status-dot bg-gray-400"></span>
+Draft
+</span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Aug 01 - Sep 15</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex space-x-2">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-edit-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="px-6 py-4">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded bg-pink-100 flex items-center justify-center text-pink-600">
+<i class="ri-heart-line"></i>
+</div>
+<div class="ml-3">
+<div class="text-sm font-medium text-gray-800">Summer Beauty Essentials</div>
+<div class="text-xs text-gray-500">Beauty & Cosmetics</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">Sephora</td>
+<td class="px-6 py-4 text-sm text-gray-700">$28,500</td>
+<td class="px-6 py-4 text-sm text-gray-700">15 / 15</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+<span class="status-dot status-suspended"></span>
+Completed
+</span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-700">May 15 - Jun 15</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex space-x-2">
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-primary hover:bg-blue-50 rounded-full">
+<i class="ri-file-chart-line"></i>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t flex items-center justify-between">
+<div class="text-sm text-gray-500">Showing 5 of 24 campaigns</div>
+<div class="flex space-x-1">
+<button class="w-8 h-8 flex items-center justify-center rounded text-gray-400 hover:bg-gray-100">
+<i class="ri-arrow-left-s-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">4</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">5</button>
+<button class="w-8 h-8 flex items-center justify-center rounded text-gray-400 hover:bg-gray-100">
+<i class="ri-arrow-right-s-line"></i>
+</button>
+</div>
+</div>
+</div>
+<!-- Content Approval Section -->
+<div class="bg-white rounded shadow mb-8">
+<div class="p-6 border-b">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-medium text-gray-800">Content Approval Queue</h2>
+<div class="flex space-x-2">
+<button class="px-3 py-1 text-xs font-medium text-primary bg-blue-50 rounded-full !rounded-button whitespace-nowrap">All (12)</button>
+<button class="px-3 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-full !rounded-button whitespace-nowrap">Pending (8)</button>
+<button class="px-3 py-1 text-xs font-medium text-gray-500 hover:bg-gray-100 rounded-full !rounded-button whitespace-nowrap">Approved (4)</button>
+</div>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="border rounded overflow-hidden">
+<div class="aspect-w-16 aspect-h-9 bg-gray-100">
+<img src="https://readdy.ai/api/search-image?query=professional%2520product%2520photography%2520of%2520athletic%2520shoes%2520on%2520white%2520background%2520with%2520soft%2520shadows%2520high%2520quality%2520commercial%2520product%2520photography&width=400&height=225&seq=prod1&orientation=landscape" class="w-full h-48 object-cover object-top" alt="Content">
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-medium text-gray-800">Nike Air Max 2025</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+Pending
+</span>
+</div>
+<div class="text-sm text-gray-500 mb-3">
+<p>Campaign: Summer Collection Launch</p>
+<p>Influencer: Emma Thompson</p>
+<p>Submitted: June 14, 2025</p>
+</div>
+<div class="flex space-x-2">
+<button class="flex-1 py-2 bg-primary text-white text-sm font-medium rounded !rounded-button whitespace-nowrap">Approve</button>
+<button class="flex-1 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded !rounded-button whitespace-nowrap">Reject</button>
+</div>
+</div>
+</div>
+<div class="border rounded overflow-hidden">
+<div class="aspect-w-16 aspect-h-9 bg-gray-100">
+<img src="https://readdy.ai/api/search-image?query=professional%2520product%2520photography%2520of%2520coffee%2520cup%2520with%2520frappuccino%2520on%2520wooden%2520table%2520with%2520soft%2520natural%2520lighting%2520high%2520quality%2520commercial%2520product%2520photography&width=400&height=225&seq=prod2&orientation=landscape" class="w-full h-48 object-cover object-top" alt="Content">
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-medium text-gray-800">Summer Frappuccino</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+Pending
+</span>
+</div>
+<div class="text-sm text-gray-500 mb-3">
+<p>Campaign: New Frappuccino Promotion</p>
+<p>Influencer: James Wilson</p>
+<p>Submitted: June 13, 2025</p>
+</div>
+<div class="flex space-x-2">
+<button class="flex-1 py-2 bg-primary text-white text-sm font-medium rounded !rounded-button whitespace-nowrap">Approve</button>
+<button class="flex-1 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded !rounded-button whitespace-nowrap">Reject</button>
+</div>
+</div>
+</div>
+<div class="border rounded overflow-hidden">
+<div class="aspect-w-16 aspect-h-9 bg-gray-100">
+<img src="https://readdy.ai/api/search-image?query=professional%2520product%2520photography%2520of%2520beauty%2520cosmetics%2520arranged%2520on%2520pink%2520background%2520with%2520soft%2520lighting%2520high%2520quality%2520commercial%2520product%2520photography&width=400&height=225&seq=prod3&orientation=landscape" class="w-full h-48 object-cover object-top" alt="Content">
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-medium text-gray-800">Summer Beauty Kit</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+Approved
+</span>
+</div>
+<div class="text-sm text-gray-500 mb-3">
+<p>Campaign: Summer Beauty Essentials</p>
+<p>Influencer: Sophia Martinez</p>
+<p>Approved: June 12, 2025</p>
+</div>
+<div class="flex space-x-2">
+<button class="flex-1 py-2 bg-gray-100 text-gray-500 text-sm font-medium rounded cursor-not-allowed !rounded-button whitespace-nowrap">Approved</button>
+<button class="flex-1 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded !rounded-button whitespace-nowrap">View Details</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t flex justify-center">
+<button class="px-4 py-2 text-primary font-medium hover:bg-blue-50 rounded !rounded-button whitespace-nowrap">
+View All Content
+</button>
+</div>
+</div>
+</main>
+</div>
+</div>
+<script id="sidebar-toggle">
+document.addEventListener('DOMContentLoaded', function() {
+const sidebar = document.getElementById('sidebar');
+const mainContent = document.getElementById('mainContent');
+const collapseBtn = document.getElementById('collapse-sidebar');
+const sidebarTexts = document.querySelectorAll('.sidebar-text');
+const header = document.querySelector('header');
+collapseBtn.addEventListener('click', function() {
+sidebar.classList.toggle('w-64');
+sidebar.classList.toggle('w-20');
+if (sidebar.classList.contains('w-20')) {
+collapseBtn.innerHTML = '<i class="ri-arrow-right-s-line ri-lg"></i>';
+sidebarTexts.forEach(text => {
+text.classList.add('hidden');
+});
+document.getElementById('main-content').classList.remove('ml-64');
+document.getElementById('main-content').classList.add('ml-20');
+header.classList.remove('left-64');
+header.classList.add('left-20');
+} else {
+collapseBtn.innerHTML = '<i class="ri-arrow-left-s-line ri-lg"></i>';
+sidebarTexts.forEach(text => {
+text.classList.remove('hidden');
+});
+document.getElementById('main-content').classList.remove('ml-20');
+document.getElementById('main-content').classList.add('ml-64');
+header.classList.remove('left-20');
+header.classList.add('left-64');
+}
+});
+});
+</script>
+<script id="charts-init">
+document.addEventListener('DOMContentLoaded', function() {
+// Activity Chart
+const activityChart = echarts.init(document.getElementById('activity-chart'));
+const activityOption = {
+animation: false,
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#E5E7EB',
+borderWidth: 1,
+textStyle: {
+color: '#1F2937'
+}
+},
+grid: {
+left: '3%',
+right: '3%',
+bottom: '3%',
+top: '3%',
+containLabel: true
+},
+xAxis: {
+type: 'category',
+boundaryGap: false,
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: {
+lineStyle: {
+color: '#E5E7EB'
+}
+},
+axisLabel: {
+color: '#6B7280'
+}
+},
+yAxis: {
+type: 'value',
+axisLine: {
+show: false
+},
+axisTick: {
+show: false
+},
+splitLine: {
+lineStyle: {
+color: '#F3F4F6'
+}
+},
+axisLabel: {
+color: '#6B7280'
+}
+},
+series: [
+{
+name: 'Influencers',
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: {
+width: 3,
+color: 'rgba(87, 181, 231, 1)'
+},
+areaStyle: {
+color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+{
+offset: 0,
+color: 'rgba(87, 181, 231, 0.2)'
+},
+{
+offset: 1,
+color: 'rgba(87, 181, 231, 0.0)'
+}
+])
+},
+data: [120, 132, 101, 134, 90, 230, 210]
+},
+{
+name: 'Advertisers',
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: {
+width: 3,
+color: 'rgba(141, 211, 199, 1)'
+},
+areaStyle: {
+color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+{
+offset: 0,
+color: 'rgba(141, 211, 199, 0.2)'
+},
+{
+offset: 1,
+color: 'rgba(141, 211, 199, 0.0)'
+}
+])
+},
+data: [220, 182, 191, 234, 290, 330, 310]
+}
+]
+};
+activityChart.setOption(activityOption);
+// Campaign Chart
+const campaignChart = echarts.init(document.getElementById('campaign-chart'));
+const campaignOption = {
+animation: false,
+tooltip: {
+trigger: 'item',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#E5E7EB',
+borderWidth: 1,
+textStyle: {
+color: '#1F2937'
+}
+},
+legend: {
+bottom: '0%',
+left: 'center',
+textStyle: {
+color: '#6B7280'
+}
+},
+series: [
+{
+name: 'Campaign Status',
+type: 'pie',
+radius: ['40%', '70%'],
+center: ['50%', '45%'],
+avoidLabelOverlap: false,
+itemStyle: {
+borderRadius: 8,
+borderColor: '#fff',
+borderWidth: 2
+},
+label: {
+show: false
+},
+emphasis: {
+label: {
+show: false
+}
+},
+labelLine: {
+show: false
+},
+data: [
+{ value: 42, name: 'Active', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+{ value: 28, name: 'Completed', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+{ value: 15, name: 'Pending', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+{ value: 15, name: 'Draft', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+]
+}
+]
+};
+campaignChart.setOption(campaignOption);
+// Handle window resize
+window.addEventListener('resize', function() {
+activityChart.resize();
+campaignChart.resize();
+});
+});
+</script>
+</body>
+</html>
